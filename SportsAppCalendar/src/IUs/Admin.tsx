@@ -1,5 +1,6 @@
 import AdminDashboard from "../components/AdminDashboard";
 import Example from "./Example";
+import UserAdministrator from "../components/UserAdministrator";
 import { useState } from "react";
 
 function Admin() {
@@ -13,10 +14,17 @@ function Admin() {
         <button onClick={() => setActiveTab("example")} className="block">
           Example
         </button>
+        <button
+          onClick={() => setActiveTab("userAdministrator")}
+          className="block"
+        >
+          Gestión de Usuarios
+        </button>
       </div>
       <div className="bg-gray-100 h-full w-full inline">
         {activeTab === "dashboard" && <AdminDashboard />}
         {activeTab === "example" && <Example />}
+        {activeTab === "userAdministrator" && <UserAdministrator />}
       </div>
     </div>
   );
