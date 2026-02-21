@@ -1,8 +1,23 @@
+import AdminDashboard from "../components/AdminDashboard";
+import Example from "./Example";
+import { useState } from "react";
+
 function Admin() {
+  const [activeTab, setActiveTab] = useState("dashboard");
   return (
-    <div className=" bg-red-500 text-white flex items-center justify-between w-auto mx-8 rounded-lg h-[80vh] gap-2">
-      <div className="bg-blue-400 h-full w-46 inline"></div>
-      <div className="bg-green-800 h-full w-full inline"></div>
+    <div className=" bg-gray-300 text-white flex items-center justify-between w-auto mx-8 rounded-lg h-[80vh] gap-2">
+      <div className="bg-gray-100 h-full w-46 inline">
+        <button onClick={() => setActiveTab("dashboard")} className="block">
+          Dashboard
+        </button>
+        <button onClick={() => setActiveTab("example")} className="block">
+          Example
+        </button>
+      </div>
+      <div className="bg-gray-100 h-full w-full inline">
+        {activeTab === "dashboard" && <AdminDashboard />}
+        {activeTab === "example" && <Example />}
+      </div>
     </div>
   );
 }
