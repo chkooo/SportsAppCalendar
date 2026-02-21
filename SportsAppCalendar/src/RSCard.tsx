@@ -1,7 +1,7 @@
 function RSCard() {
   const imgRoute = "/src/assets/loremCancha.svg";
   return (
-    <div className="bg-gray-100 border border-t-2 border-l-2 border-gray-500 rounded-lg shadow-md p-4 pt-0 font-sans antialiased w-72">
+    <div className="bg-gray-100 border border-t-2 border-l-2 border-gray-500 rounded-lg shadow-md p-4 pt-0 font-sans antialiased">
       <img
         src={imgRoute}
         alt=""
@@ -14,7 +14,7 @@ function RSCard() {
       <p className="text-gray-600 text-sm tracking-normal text-left">
         $250/Hora
       </p>
-      <div className="flex flex-col items-center">
+      <div className="flex flex-col items-center animate-pulse animate-infinite animate-duration-[1750ms] animate-delay-[750ms] animate-alternate-reverse">
         <div className="text-gray-200 font-bold bg-green-400 w-fit rounded-full text-sm text-center p-2 border border-t-2 border-l-2 border-gray-800">
           Disponible
         </div>
