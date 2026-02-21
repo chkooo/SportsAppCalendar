@@ -16,13 +16,13 @@ function App() {
               alt="Logo SAC"
             />
             <div className="absolute inset-0 flex items-center justify-center">
-              <h2 className="text-white text-6xl font-black uppercase italic">
-                Vive la experiencia
+              <h2 className="text-white text-6xl font-black uppercase italic text-center">
+                Vive la experiencia deportiva con Sport-App
               </h2>
             </div>
           </div>
         </section>
-        <div className="py-6 w-auto h-auto text-center text-white text-4xl font-bold tracking-tight">
+        <div className="py-6 w-auto h-auto text-center text-white text-3xl font-bold tracking-tight">
           Canchas Disponibles
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-24 justify-items-center max-w-6xl mx-auto bg-zinc-900">

@@ -15,7 +15,7 @@ function RSCard() {
         $250/Hora
       </p>
       <div className="flex flex-col items-center animate-pulse animate-infinite animate-duration-[1750ms] animate-delay-[750ms] animate-alternate-reverse">
-        <div className="text-gray-200 font-bold bg-green-400 w-fit rounded-full text-sm text-center p-2 border border-t-2 border-l-2 border-gray-800">
+        <div className="text-gray-200 font-bold bg-emerald-300 w-fit rounded-full text-sm text-center p-2 border border-t-2 border-l-2 border-gray-800 drop-shadow-md [text-shadow:_2px_2px_2px_rgb(0_0_0_/_40%)]">
           Disponible
         </div>
       </div>
