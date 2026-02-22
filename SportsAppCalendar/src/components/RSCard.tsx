@@ -1,17 +1,17 @@
 function RSCard() {
   const imgRoute = "/src/assets/loremCancha.svg";
   return (
-    <div className="bg-gray-100 border border-t-2 border-l-2 border-gray-500 rounded-lg shadow-md p-4 pt-0 font-sans antialiased">
+    <div className="bg-black border border-t-2 border-l-2 border-gray-500 rounded-lg shadow-md p-4 pt-0 font-sans antialiased">
       <img
         src={imgRoute}
         alt=""
         className="w-full h-32 object-cover rounded-lg"
       />
       <h3 className="text-xl font-bold mb-2 tracking-tight">Cancha 1</h3>
-      <p className="text-gray-600 text-base tracking-normal text-left">
+      <p className="text-zinc-300 text-base tracking-normal text-left">
         Futbol Cancha 1
       </p>
-      <p className="text-gray-600 text-sm tracking-normal text-left">
+      <p className="text-gray-400 text-sm tracking-normal text-left">
         $250/Hora
       </p>
       <div className="flex flex-col items-center animate-pulse animate-infinite animate-duration-[1750ms] animate-delay-[750ms] animate-alternate-reverse">
