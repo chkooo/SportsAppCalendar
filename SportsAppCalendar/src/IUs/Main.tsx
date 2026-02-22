@@ -3,7 +3,7 @@ import RSCard from "../components/RSCard";
 function Main() {
   const imgRoute = "/src/assets/loremIMG.svg";
   return (
-    <div className="relative bg-cyan-800">
+    <div className="relative bg-zinc-950">
       <section className="h-[174vh] bg-zinc-900">
         <div className="sticky top-0 h-screen overflow-hidden">
           <img
