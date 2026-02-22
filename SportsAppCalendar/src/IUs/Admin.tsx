@@ -1,6 +1,9 @@
 import AdminDashboard from "../components/AdminDashboard";
 import Example from "./Example";
 import UserAdministrator from "../components/UserAdministrator";
+import ResourceInventory from "../components/ResourceInventory";
+import BookingControl from "../components/BookingControl";
+import MantenanceLog from "../components/MaintenanceLog";
 import { useState } from "react";
 
 function Admin() {
@@ -17,14 +20,35 @@ function Admin() {
         >
           Gestión de Usuarios
         </button>
+        <button
+          onClick={() => setActiveTab("resourceInventory")}
+          className="block"
+        >
+          Gestión de Recursos
+        </button>
+        <button
+          onClick={() => setActiveTab("bookingControl")}
+          className="block"
+        >
+          Reservaciones
+        </button>
+        <button
+          onClick={() => setActiveTab("maintenanceLog")}
+          className="block"
+        >
+          Mantenimiento
+        </button>
         <button onClick={() => setActiveTab("example")} className="block">
           Example
         </button>
       </div>
-      <div className="bg-gray-100 h-full w-full inline">
+      <div className="bg-gray-100 h-full w-full inline rounded-lg p-4 ">
         {activeTab === "dashboard" && <AdminDashboard />}
         {activeTab === "example" && <Example />}
         {activeTab === "userAdministrator" && <UserAdministrator />}
+        {activeTab === "resourceInventory" && <ResourceInventory />}
+        {activeTab === "bookingControl" && <BookingControl />}
+        {activeTab === "maintenanceLog" && <MantenanceLog />}
       </div>
     </div>
   );
