@@ -10,7 +10,7 @@ function App() {
     <>
       <Router>
         <Menu />
-        <main className="pt-24 ">
+        <main className="pt-24 bg-zinc-900 min-h-screen">
           <Routes>
             <Route path="/" element={<Main />} />
             <Route path="/admin" element={<Admin />} />
