@@ -39,7 +39,7 @@ function Admin() {
           Mantenimiento
         </button>
         <button onClick={() => setActiveTab("example")} className="block">
-          Example
+          Salir del CRUD
         </button>
       </div>
       <div className="bg-gray-100 h-full w-full inline rounded-lg p-4 ">

@@ -1,1 +1,28 @@
 @import "tailwindcss";
+/* 1. Ancho de la barra (Angosta) */
+::-webkit-scrollbar {
+  width: 4px; /* Muy delgada para que no robe espacio */
+  height: 4px; /* Para el scroll horizontal si llegara a salir */
+}
+
+/* 2. El fondo (Track) - Lo hacemos transparente para que no se vea el carril */
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* 3. La barrita que se mueve (Thumb) */
+::-webkit-scrollbar-thumb {
+  background: #3f3f46; /* Un gris zinc-700 que va con tu tema dark */
+  border-radius: 50px; /* Completamente redonda (estilo píldora) */
+}
+
+/* 4. Efecto al pasar el mouse (Hover) */
+::-webkit-scrollbar-thumb:hover {
+  background: #60a5fa; /* Se ilumina a azul (como tus botones) al tocarla */
+}
+
+/* Para Firefox (es más limitado pero ayuda) */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #3f3f46 transparent;
+}
