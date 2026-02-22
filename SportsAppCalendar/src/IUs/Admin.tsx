@@ -11,14 +11,14 @@ function Admin() {
         <button onClick={() => setActiveTab("dashboard")} className="block">
           Dashboard
         </button>
-        <button onClick={() => setActiveTab("example")} className="block">
-          Example
-        </button>
         <button
           onClick={() => setActiveTab("userAdministrator")}
           className="block"
         >
           Gestión de Usuarios
+        </button>
+        <button onClick={() => setActiveTab("example")} className="block">
+          Example
         </button>
       </div>
       <div className="bg-gray-100 h-full w-full inline">
