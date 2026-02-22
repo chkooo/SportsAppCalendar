@@ -1,7 +1,5 @@
 # SportsAppCalendar
 
-# SportApp-Calendar
-
 **SportApp-Calendar** es un sistema integral de gestión y reservación de espacios deportivos. Diseñado con una arquitectura moderna y escalable, permite a los administradores gestionar recursos (canchas) y a los usuarios consultar disponibilidad en tiempo real.
 
 Este proyecto forma parte de la materia de **Gestión de Proyectos de Software**, enfocado en la modularidad y la experiencia de usuario (UX).
