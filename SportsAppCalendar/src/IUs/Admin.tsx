@@ -42,7 +42,7 @@ function Admin() {
           Salir del CRUD
         </button>
       </div>
-      <div className="bg-gray-800 h-full w-full inline rounded-lg p-4 ">
+      <div className="bg-zinc-900 h-full w-full inline rounded-lg p-4 ">
         {activeTab === "dashboard" && <AdminDashboard />}
         {activeTab === "example" && <Example />}
         {activeTab === "userAdministrator" && <UserAdministrator />}

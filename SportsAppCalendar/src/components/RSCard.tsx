@@ -1,7 +1,7 @@
 function RSCard() {
   const imgRoute = "/src/assets/loremCancha.svg";
   return (
-    <div className="bg-black border border-t-2 border-l-2 border-gray-500 rounded-lg shadow-md p-4 pt-0 font-sans antialiased">
+    <div className="bg-black/30 border border-t-2 border-l-2 border-gray-500 rounded-lg shadow-md p-4 pt-0 font-sans antialiased">
       <img
         src={imgRoute}
         alt=""
