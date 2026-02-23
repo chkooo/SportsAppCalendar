@@ -4,7 +4,7 @@ function Menu() {
   const imgRoute = "/src/assets/logoSAC.svg";
 
   return (
-    <div className="fixed top-0 left-0 w-full bg-zinc-800 border-b-2 border-gray-300 px-6 py-3 z-50 flex items-center justify-between font-sans shadow-sm">
+    <div className="fixed top-0 left-0 w-full bg-zinc-800 border-b-2 border-zinc-950 px-6 py-3 z-50 flex items-center justify-between font-sans shadow-sm">
       <div className="w-32 flex items-center">
         <img src={imgRoute} alt="Logo" className="h-16 w-auto object-contain" />
         <h1 className="text-zinc-300 font-black text-2xl tracking-tighter uppercase">
