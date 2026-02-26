@@ -1,0 +1,9 @@
+{
+  "name": "my-saas",
+  "scripts": {
+    "dev": "concurrently \"cd Backend && bun run --watch index.ts\" \"cd Frontend && bun dev\""
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}

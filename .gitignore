@@ -1,0 +1,13 @@
+# Root
+node_modules/
+bun.lock
+
+# Backend
+Backend/node_modules/
+Backend/.env
+Backend/generated/
+
+# Frontend
+Frontend/node_modules/
+Frontend/.env
+Frontend/dist/
