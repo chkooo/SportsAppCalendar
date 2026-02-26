@@ -6,16 +6,12 @@
 
 generator client {
   provider = "prisma-client"
-  output = "./generated/prisma/client"
+  output   = "../generated/prisma"
 }
 
 datasource db {
   provider = "postgresql"
 }
-
-// ============================================
-// CORE LAYER
-// ============================================
 
 model Client {
   id          String   @id @default(cuid())
@@ -39,8 +35,6 @@ model Client {
   resources       Resource[]
   bookings        Booking[]
   notifications   Notification[]
-
-  @@map("clients")
 }
 
 model User {
@@ -58,8 +52,6 @@ model User {
   bookings      Booking[]
   payments      Payment[]
   notifications Notification[]
-
-  @@map("users")
 }
 
 model Membership {
@@ -73,9 +65,7 @@ model Membership {
   user   User   @relation(fields: [userId], references: [id])
   client Client @relation(fields: [clientId], references: [id])
 
-  @@map("memberships")
   @@unique([userId, clientId]) // One membership per user per client
-  
 }
 
 // ============================================
@@ -92,7 +82,6 @@ model ResourceType {
   client    Client     @relation(fields: [clientId], references: [id])
   resources Resource[]
 
-  @@map("resource_types")
   @@unique([clientId, name])
 }
 
@@ -112,8 +101,6 @@ model Resource {
   schedules    ResourceSchedule[]
   blocks       ResourceBlock[]
   bookings     Booking[]
-
-  @@map("resources")
 }
 
 model ResourceSchedule {
@@ -126,7 +113,6 @@ model ResourceSchedule {
   resource Resource @relation(fields: [resourceId], references: [id])
 
   @@unique([resourceId, dayOfWeek])
-  @@map("resource_schedules")
 }
 
 model ResourceBlock {
@@ -138,8 +124,6 @@ model ResourceBlock {
   reason     String?  // "Maintenance", "Private event"
 
   resource Resource @relation(fields: [resourceId], references: [id])
-
-  @@map("resource_blocks")
 }
 
 // ============================================
@@ -166,8 +150,6 @@ model Booking {
   payment  Payment?
 
   @@index([resourceId, date]) // Fast overlap queries
-
-  @@map("bookings")
 }
 
 // ============================================
@@ -187,8 +169,6 @@ model Payment {
 
   booking Booking @relation(fields: [bookingId], references: [id])
   user    User    @relation(fields: [userId], references: [id])
-
-  @@map("payments")
 }
 
 // ============================================
@@ -209,8 +189,6 @@ model Notification {
 
   client Client @relation(fields: [clientId], references: [id])
   user   User   @relation(fields: [userId], references: [id])
-
-  @@map("notifications")
 }
 
 // ============================================
