@@ -19,7 +19,7 @@ Este proyecto forma parte de la materia de **Gestión de Proyectos de Software**
 - **PostgreSQL (Supabase)**: Base de datos relacional de nivel empresarial alojada en la nube (DBaaS), asegurando persistencia, seguridad y alta disponibilidad.
 
 ---
-## 📂 Estructura del Proyecto
+## Estructura del Proyecto
 
 * `/frontend`: Interfaz de usuario, componentes de administración y vistas de cliente desarrolladas en React.
 * `/backend`: API REST, esquemas de Prisma, lógica de negocio y controladores de Hono.
