@@ -6,15 +6,259 @@
 
 generator client {
   provider = "prisma-client"
-  output   = "../generated/prisma"
+  output = "./generated/prisma/client"
 }
 
 datasource db {
   provider = "postgresql"
 }
 
+// ============================================
+// CORE LAYER
+// ============================================
+
+model Client {
+  id          String   @id @default(cuid())
+  name        String
+  slug        String   @unique  // "sports-club-juarez" for URLs
+  email       String   @unique
+  phone       String?
+  logoUrl     String?
+  active      Boolean  @default(true)
+  
+  // Payment config per client
+  paymentMode PaymentMode @default(BOTH)
+  currency    String      @default("MXN")
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  memberships     Membership[]
+  resourceTypes   ResourceType[]
+  resources       Resource[]
+  bookings        Booking[]
+  notifications   Notification[]
+
+  @@map("clients")
+}
+
 model User {
-  id        Int   @id @default(autoincrement())
-  email     String   @unique
-  name      String?
+  id          String   @id // Same UUID as Supabase Auth
+  name        String
+  email       String   @unique
+  phone       String?
+  avatarUrl   String?
+  active      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  memberships   Membership[]
+  bookings      Booking[]
+  payments      Payment[]
+  notifications Notification[]
+
+  @@map("users")
+}
+
+model Membership {
+  id        String   @id @default(cuid())
+  userId    String
+  clientId  String
+  role      Role     @default(CUSTOMER)
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+
+  user   User   @relation(fields: [userId], references: [id])
+  client Client @relation(fields: [clientId], references: [id])
+
+  @@map("memberships")
+  @@unique([userId, clientId]) // One membership per user per client
+  
+}
+
+// ============================================
+// RESOURCE LAYER
+// ============================================
+
+model ResourceType {
+  id          String  @id @default(cuid())
+  clientId    String
+  name        String  // "Football Field", "Studio Room", "Desk"
+  description String?
+  icon        String? // optional icon slug
+
+  client    Client     @relation(fields: [clientId], references: [id])
+  resources Resource[]
+
+  @@map("resource_types")
+  @@unique([clientId, name])
+}
+
+model Resource {
+  id             String   @id @default(cuid())
+  clientId       String
+  resourceTypeId String
+  name           String   // "Field 1", "Studio A"
+  description    String?
+  pricePerHour   Decimal  @db.Decimal(10, 2)
+  active         Boolean  @default(true)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  client       Client       @relation(fields: [clientId], references: [id])
+  resourceType ResourceType @relation(fields: [resourceTypeId], references: [id])
+  schedules    ResourceSchedule[]
+  blocks       ResourceBlock[]
+  bookings     Booking[]
+
+  @@map("resources")
+}
+
+model ResourceSchedule {
+  id           String @id @default(cuid())
+  resourceId   String
+  dayOfWeek    Int    // 1=Mon, 7=Sun
+  openTime     String // "08:00"
+  closeTime    String // "22:00"
+
+  resource Resource @relation(fields: [resourceId], references: [id])
+
+  @@unique([resourceId, dayOfWeek])
+  @@map("resource_schedules")
+}
+
+model ResourceBlock {
+  id         String   @id @default(cuid())
+  resourceId String
+  date       DateTime @db.Date
+  startTime  String   // "09:00"
+  endTime    String   // "11:00"
+  reason     String?  // "Maintenance", "Private event"
+
+  resource Resource @relation(fields: [resourceId], references: [id])
+
+  @@map("resource_blocks")
+}
+
+// ============================================
+// BOOKING LAYER
+// ============================================
+
+model Booking {
+  id         String        @id @default(cuid())
+  clientId   String
+  userId     String
+  resourceId String
+  date       DateTime      @db.Date
+  startTime  String        // "14:00"
+  endTime    String        // "16:00"
+  totalPrice Decimal       @db.Decimal(10, 2) // price locked at booking time
+  status     BookingStatus @default(PENDING)
+  notes      String?
+  createdAt  DateTime      @default(now())
+  updatedAt  DateTime      @updatedAt
+
+  client   Client   @relation(fields: [clientId], references: [id])
+  user     User     @relation(fields: [userId], references: [id])
+  resource Resource @relation(fields: [resourceId], references: [id])
+  payment  Payment?
+
+  @@index([resourceId, date]) // Fast overlap queries
+
+  @@map("bookings")
+}
+
+// ============================================
+// PAYMENT LAYER
+// ============================================
+
+model Payment {
+  id            String        @id @default(cuid())
+  bookingId     String        @unique
+  userId        String
+  amount        Decimal       @db.Decimal(10, 2)
+  method        PaymentMethod
+  status        PaymentStatus @default(PENDING)
+  paidAt        DateTime?
+  referenceCode String?       // external payment gateway ref
+  createdAt     DateTime      @default(now())
+
+  booking Booking @relation(fields: [bookingId], references: [id])
+  user    User    @relation(fields: [userId], references: [id])
+
+  @@map("payments")
+}
+
+// ============================================
+// NOTIFICATION LAYER
+// ============================================
+
+model Notification {
+  id        String             @id @default(cuid())
+  clientId  String
+  userId    String
+  type      NotificationType
+  channel   NotificationChannel
+  subject   String?
+  body      String
+  sentAt    DateTime?
+  read      Boolean            @default(false)
+  createdAt DateTime           @default(now())
+
+  client Client @relation(fields: [clientId], references: [id])
+  user   User   @relation(fields: [userId], references: [id])
+
+  @@map("notifications")
+}
+
+// ============================================
+// ENUMS
+// ============================================
+
+enum Role {
+  SUPERADMIN  // Your SaaS admin (you)
+  ADMIN       // Company admin
+  STAFF       // Company employee
+  CUSTOMER    // End user booking
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+  COMPLETED
+}
+
+enum PaymentMode {
+  ONLINE
+  ON_ARRIVAL
+  BOTH
+}
+
+enum PaymentMethod {
+  CARD
+  CASH
+  TRANSFER
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  REFUNDED
+  FAILED
+}
+
+enum NotificationType {
+  BOOKING_CONFIRMED
+  BOOKING_CANCELLED
+  BOOKING_REMINDER
+  PAYMENT_RECEIVED
+}
+
+enum NotificationChannel {
+  EMAIL
+  SMS
+  IN_APP
 }

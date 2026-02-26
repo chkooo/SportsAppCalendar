@@ -6,12 +6,44 @@ const server = Bun.serve({
     const { pathname } = new URL(req.url);
     if (pathname === "/favicon.ico") return new Response(null, { status: 204 });
 
-    const users = await prisma.user.findMany();
-    const count = await prisma.user.count();
+    const [
+      clients,
+      users,
+      memberships,
+      resourceTypes,
+      resources,
+      resourceSchedules,
+      bookings,
+      payments,
+      notifications,
+    ] = await Promise.all([
+      prisma.client.findMany(),
+      prisma.user.findMany(),
+      prisma.membership.findMany(),
+      prisma.resourceType.findMany(),
+      prisma.resource.findMany(),
+      prisma.resourceSchedule.findMany(),
+      prisma.booking.findMany(),
+      prisma.payment.findMany(),
+      prisma.notification.findMany(),
+    ]);
 
-    return new Response(JSON.stringify({ users, totalUsers: count }), {
-      headers: { "Content-Type": "application/json" },
-    });
+    return new Response(
+      JSON.stringify({
+        clients,
+        users,
+        memberships,
+        resourceTypes,
+        resources,
+        resourceSchedules,
+        bookings,
+        payments,
+        notifications,
+      }),
+      {
+        headers: { "Content-Type": "application/json" },
+      },
+    );
   },
 });
 
