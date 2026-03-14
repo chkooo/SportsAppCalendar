@@ -13,23 +13,23 @@ Este proyecto forma parte de la materia de **Gestión de Proyectos de Software**
 - **Tailwind CSS v4** - Estilizado moderno y eficiente.
 - **Bun** - Runtime de JavaScript ultra rápido para gestión de paquetes y ejecución.
 
-### Backend (En Evaluación / Próximamente)
+### Backend (Cloud-Native Architecture)
+- **Bun + Hono**: Framework de backend minimalista y de alto rendimiento, optimizado para entornos de baja latencia y alta concurrencia.
+- **Prisma ORM**: Capa de abstracción de base de datos que permite un manejo de datos seguro y sincronizado con TypeScript (Type-Safe).
+- **PostgreSQL (Supabase)**: Base de datos relacional de nivel empresarial alojada en la nube (DBaaS), asegurando persistencia, seguridad y alta disponibilidad.
 
-- **MariaDB** (Base de datos relacional).
-- **PHP / API REST** (Propuesto para la lógica de servidor).
+---
+## Estructura del Proyecto
+
+* `/frontend`: Interfaz de usuario, componentes de administración y vistas de cliente desarrolladas en React.
+* `/backend`: API REST, esquemas de Prisma, lógica de negocio y controladores de Hono.
 
 ---
 
-## Arquitectura de Componentes: RSCard
+### Requisitos Previos
+Es indispensable contar con [Bun](https://bun.sh/) instalado en su versión 1.0 o superior.
 
-Para garantizar que el proyecto sea escalable a otros modelos de negocio (SaaS), se utiliza el componente universal.
-
-## Instalación y Uso
-
-Asegúrate de tener [Bun](https://bun.sh/) instalado en tu sistema.
-
-1. **Clonar el repositorio:**
-   ```bash
-   git clone [https://github.com/chkooo/SportsAppCalendar.git](https://github.com/chkooo/SportsAppCalendar.git)
-   cd SportsAppCalendar
-   ```
+### 1. Clonar el repositorio
+```bash
+git clone [https://github.com/chkooo/SportsAppCalendar.git](https://github.com/chkooo/SportsAppCalendar.git)
+cd SportsAppCalendar
