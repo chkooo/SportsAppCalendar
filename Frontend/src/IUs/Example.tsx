@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { TestConnection } from "../Others/apiHookTest";
 
 function Example() {
   return (
@@ -9,6 +10,7 @@ function Example() {
           Example Button
         </button>
       </Link>
+      <TestConnection />
     </div>
   );
 }
