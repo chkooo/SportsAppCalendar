@@ -38,3 +38,16 @@ resources.delete("/:id", async (c) => {
   await prisma.resource.delete({ where: { id } });
   return c.json({ message: "Deleted" });
 });
+
+resources.get("/blocks", async (c) => {
+  try {
+    const blocks = await prisma.resourceBlock.findMany({
+      include: {
+        resource: true,
+      },
+    });
+    return c.json(blocks);
+  } catch (error) {
+    return c.json({ error: "Error al obtener bloques de mantenimiento" }, 500);
+  }
+});

@@ -1,20 +1,31 @@
-function RSCard() {
+function RSCard({
+  name,
+  description,
+  price,
+}: {
+  name: string;
+  description: string;
+  price: any;
+}) {
   const imgRoute = "/src/assets/loremCancha.svg";
   return (
-    <div className="bg-black/30 border border-t-2 border-l-2 border-gray-500 rounded-lg shadow-md p-4 pt-0 font-sans antialiased">
+    <div
+      className="bg-black/30 border border-t-2 border-l-2 border-gray-500 rounded-lg shadow-md p-4 pt-0 font-sans antialiased max-w-72 w-full justify-center
+    align-items-center flex flex-col"
+    >
       <img
         src={imgRoute}
         alt=""
         className="w-full h-32 object-cover rounded-t-lg"
       />
       <h3 className="text-xl text-zinc-300 font-bold mb-2 tracking-tight">
-        Cancha 1 {/*Nombre*/}
+        {name} {/* Nombre de la cancha */}
       </h3>
-      <p className="text-zinc-300 text-base tracking-normal text-left">
-        Futbol Cancha 1 {/* Descirpcion*/}
+      <p className="text-zinc-300 text-base tracking-normal text-left w-full wrap-break-words line-clamp-3 min-h-18">
+        {description} {/* Descripción */}
       </p>
       <p className="text-gray-400 text-sm tracking-normal text-left font-semibold">
-        $250/Hora {/* Precio*/}
+        ${price} {/* Precio*/}
       </p>
       <div className="mt-4 flex flex-col items-center animate-bounce animate-infinite animate-duration-[2000ms] animate-delay-[250ms] animate-ease-in animate-normal">
         <div className="text-emerald-950 font-bold bg-emerald-300 w-fit rounded-full text-sm text-center p-2 border border-t-2 border-l-2 border-gray-800 drop-shadow-md [text-shadow:4px_4px_4px_rgb(0_0_0/40%)]">
