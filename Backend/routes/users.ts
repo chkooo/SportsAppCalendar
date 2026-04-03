@@ -4,7 +4,11 @@ import { prisma } from "../db";
 export const users = new Hono();
 
 users.get("/", async (c) => {
-  const all = await prisma.user.findMany();
+  const all = await prisma.user.findMany({
+    include: {
+      memberships: true,
+    },
+  });
   return c.json(all);
 });
 
@@ -32,4 +36,24 @@ users.delete("/:id", async (c) => {
   const id = c.req.param("id");
   await prisma.user.delete({ where: { id } });
   return c.json({ message: "Deleted" });
+});
+
+users.patch("/:id", async (c) => {
+  const id = c.req.param("id");
+  const body = await c.req.json();
+
+  try {
+    const user = await prisma.user.update({
+      where: { id },
+      data: {
+        name: body.name,
+        phone: body.phone,
+        active: body.active, // Aquí es donde entra el toggle
+        avatarUrl: body.avatarUrl,
+      },
+    });
+    return c.json(user);
+  } catch (e) {
+    return c.json({ error: "Error updating user" }, 500);
+  }
 });

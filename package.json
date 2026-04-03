@@ -1,7 +1,8 @@
 {
-  "name": "my-saas",
+  "name": "SAC",
   "scripts": {
-    "dev": "concurrently \"cd Backend && bun run --watch index.ts\" \"cd Frontend && bun dev\""
+    "dev": "concurrently \"cd Backend && bun run --watch index.ts\" \"cd Frontend && bun dev\"",
+    "devh": "concurrently \"cd Backend && bun run --watch index.ts\" \"cd Frontend && bun dev --host\""
   },
   "devDependencies": {
     "concurrently": "^9.2.1"

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import UserAdminTB from "./DashboardComponents/UserAdminTB";
 
 function UserAdministrator() {
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -20,6 +20,24 @@ function UserAdministrator() {
 
     getUsers();
   }, []);
+
+  const handleToggle = async (id: string, currentStatus: string) => {
+    const newActive = currentStatus !== "Activo";
+    try {
+      const response = await fetch(`http://localhost:3000/users/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ active: newActive }),
+      });
+      if (!response.ok) throw new Error("Error al actualizar");
+
+      setUsers((prev: any[]) =>
+        prev.map((u) => (u.id === id ? { ...u, active: newActive } : u)),
+      );
+    } catch (error) {
+      console.error("Error al cambiar estado:", error);
+    }
+  };
 
   return (
     <div className="h-full bg-zinc-900 text-white flex items-center justify-start flex-col gap-6 p-6">
@@ -68,8 +86,9 @@ function UserAdministrator() {
                 name={user.name}
                 email={user.email}
                 phone={user.phone}
-                role={user.role}
-                status={user.status}
+                role={user.memberships[0]?.role || "N/A"}
+                status={user.active ? "Activo" : "Inactivo"}
+                onToggle={handleToggle} // 👈 pasado aquí
               />
             ))
           ) : (

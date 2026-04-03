@@ -1,12 +1,14 @@
 import { supabase } from "./lib/supabase";
 
-const { data, error } = await supabase.auth.signUp({
-  email: "testuser4@email.com",
-  password: "password123",
-  options: {
-    data: { name: "Test User" },
-  },
-});
+export const testSupabase = async () => {
+  const { data, error } = await supabase.auth.signUp({
+    email: "jesman29game@gmail.com",
+    password: "password123",
+    options: {
+      data: { name: "ChkoUser2" },
+    },
+  });
 
-console.log("data:", data);
-console.log("error:", error);
+  console.log("data:", data);
+  console.log("error:", error);
+};
