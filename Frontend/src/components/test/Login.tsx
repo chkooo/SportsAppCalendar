@@ -12,15 +12,47 @@ function Login() {
     setLoading(true);
     setError("");
 
+    // Validación y limpieza
+    const cleanEmail = email.trim().toLowerCase();
+    const cleanPassword = password.trim();
+
+    if (!cleanEmail) {
+      setError("El correo es requerido.");
+      setLoading(false);
+      return;
+    }
+
+    if (!cleanEmail.includes("@")) {
+      setError("El correo no es válido.");
+      setLoading(false);
+      return;
+    }
+
+    if (!cleanPassword) {
+      setError("La contraseña es requerida.");
+      setLoading(false);
+      return;
+    }
+
+    if (cleanPassword.length < 6) {
+      setError("La contraseña debe tener al menos 6 caracteres.");
+      setLoading(false);
+      return;
+    }
+
     const { data, error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
+      email: cleanEmail,
+      password: cleanPassword,
     });
-    //Debugging logs
-    console.log("signInWithPassword error:", error);
 
     if (error) {
-      setError("Credenciales incorrectas, intenta de nuevo.");
+      if (error.message.includes("Invalid login credentials")) {
+        setError("Correo o contraseña incorrectos.");
+      } else if (error.message.includes("Email not confirmed")) {
+        setError("Debes confirmar tu correo antes de iniciar sesión.");
+      } else {
+        setError("Error al iniciar sesión, intenta de nuevo.");
+      }
       setLoading(false);
       return;
     }
@@ -54,11 +86,18 @@ function Login() {
           onChange={(e) => setPassword(e.target.value)}
           className="w-3/4 p-2 rounded-lg bg-zinc-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
         />
+
+        {error && (
+          <p className="text-red-400 text-sm font-bold w-3/4 text-center">
+            {error}
+          </p>
+        )}
         <button
           type="submit"
-          className="w-3/4 bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition-colors font-bold uppercase tracking-tight"
+          disabled={loading}
+          className="w-3/4 bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition-colors font-bold uppercase tracking-tight disabled:opacity-50"
         >
-          Log In
+          {loading ? "Cargando..." : "Log In"}
         </button>
       </form>
     </div>
