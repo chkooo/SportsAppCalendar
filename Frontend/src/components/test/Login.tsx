@@ -61,45 +61,45 @@ function Login() {
   };
 
   return (
-    <div className="bg-zinc-800 flex flex-col items-center justify-center max-h-1/2 h-screen max-w-1/2 w-screen">
-      <div className="mb-6 text-center">
-        <h1 className="w-full text-center text-white">Login</h1>
-        <p className="text-white">Please enter your credentials</p>
+    <div className="bg-zinc-800 flex flex-col md:flex-row items-center w-full h-fit overflow-hidden rounded-lg self-start">
+      {/* LADO IZQUIERDO (desktop) / ARRIBA (mobile): Texto Informativo */}
+      <div className="w-full md:w-1/2 h-auto md:h-full p-4 md:p-8 flex flex-col items-center justify-center bg-zinc-700/30 border-b md:border-b-0 md:border-r border-gray-700">
+        <h2 className="text-white text-xl font-semibold text-center uppercase tracking-widest">
+          Bienvenido
+        </h2>
+        <p className="text-gray-400 text-center mt-2 leading-relaxed">
+          Please enter your credentials to access the platform.
+        </p>
       </div>
-      <form
-        className="w-full flex flex-col items-center gap-4"
-        onSubmit={handleSubmit}
-      >
-        <input
-          type="email"
-          name="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          className="w-3/4 p-2 rounded-lg bg-zinc-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
-        />
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          className="w-3/4 p-2 rounded-lg bg-zinc-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
-        />
 
-        {error && (
-          <p className="text-red-400 text-sm font-bold w-3/4 text-center">
-            {error}
-          </p>
-        )}
-        <button
-          type="submit"
-          disabled={loading}
-          className="w-3/4 bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition-colors font-bold uppercase tracking-tight disabled:opacity-50"
-        >
-          {loading ? "Cargando..." : "Log In"}
-        </button>
-      </form>
+      {/* LADO DERECHO (desktop) / ABAJO (mobile): Formulario */}
+      <div className="w-full md:w-1/2 h-auto md:h-full p-4 md:p-8 flex flex-col items-center justify-center">
+        <h1 className="text-2xl font-bold text-white mb-6">Login</h1>
+        <form className="w-full flex flex-col gap-4" onSubmit={handleSubmit}>
+          <input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="p-2 rounded-lg bg-zinc-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="p-2 rounded-lg bg-zinc-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          {error && <p className="text-red-400 text-xs text-center">{error}</p>}
+          <button
+            type="submit"
+            disabled={loading}
+            className="bg-blue-500 text-white py-2 rounded-lg font-bold uppercase disabled:opacity-50"
+          >
+            {loading ? "Cargando..." : "Log In"}
+          </button>
+        </form>
+      </div>
     </div>
   );
 }

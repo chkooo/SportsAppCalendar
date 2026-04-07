@@ -4,6 +4,7 @@ import { supabase } from "../../lib/supabase";
 function Register() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -17,6 +18,7 @@ function Register() {
     const cleanName = name.trim();
     const cleanEmail = email.trim().toLowerCase();
     const cleanPassword = password.trim();
+    const cleanPhone = phone.trim();
 
     if (!cleanName) {
       setError("El nombre es requerido.");
@@ -32,6 +34,20 @@ function Register() {
 
     if (!cleanEmail.includes("@")) {
       setError("El correo no es válido.");
+      setLoading(false);
+      return;
+    }
+
+    if (!cleanPhone) {
+      setError("El teléfono es requerido.");
+      setLoading(false);
+      return;
+    }
+
+    if (!/^\d{7,15}$/.test(cleanPhone)) {
+      setError(
+        "El teléfono debe contener solo números y tener entre 7 y 15 dígitos.",
+      );
       setLoading(false);
       return;
     }
@@ -54,6 +70,7 @@ function Register() {
       options: {
         data: {
           name: cleanName,
+          phone: cleanPhone,
         },
       },
     });
@@ -71,51 +88,59 @@ function Register() {
     console.log("Registro exitoso:", data);
   };
   return (
-    <div className="bg-zinc-800 flex flex-col items-center justify-center max-h-1/2 h-screen max-w-1/2 w-screen">
-      <div className="mb-6 text-center">
-        <h1 className="w-full text-center text-white">Register</h1>
-        <p className="text-white">Please enter your details</p>
+    <div className="bg-zinc-800 flex flex-col md:flex-row items-center w-full h-fit overflow-hidden rounded-lg self-start">
+      {/* IZQUIERDA (desktop) / ARRIBA (mobile): Formulario */}
+      <div className="w-full md:w-1/2 h-auto md:h-full p-4 md:p-8 flex flex-col items-center justify-center">
+        <h1 className="text-2xl font-bold text-white mb-6">Register</h1>
+        <form className="w-full flex flex-col gap-4" onSubmit={handleSubmit}>
+          <input
+            type="text"
+            placeholder="Name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            className="p-2 rounded-lg bg-zinc-700 text-white focus:outline-none focus:ring-2 focus:ring-green-500"
+          />
+          <input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="p-2 rounded-lg bg-zinc-700 text-white focus:outline-none focus:ring-2 focus:ring-green-500"
+          />
+          <input
+            type="tel"
+            placeholder="Phone"
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+            className="p-2 rounded-lg bg-zinc-700 text-white focus:outline-none focus:ring-2 focus:ring-green-500"
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="p-2 rounded-lg bg-zinc-700 text-white focus:outline-none focus:ring-2 focus:ring-green-500"
+          />
+          {error && <p className="text-red-400 text-xs text-center">{error}</p>}
+          <button
+            type="submit"
+            disabled={loading}
+            className="bg-green-500 text-white py-2 rounded-lg font-bold uppercase disabled:opacity-50"
+          >
+            {loading ? "Cargando..." : "Register"}
+          </button>
+        </form>
       </div>
-      <form
-        className="w-full flex flex-col items-center gap-4"
-        onSubmit={handleSubmit}
-      >
-        <input
-          type="text"
-          name="name"
-          onChange={(e) => setName(e.target.value)}
-          placeholder="Name"
-          className="w-full p-2 rounded-md bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
-        <input
-          type="email"
-          name="email"
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="Email"
-          className="w-full p-2 rounded-md bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
-        <input
-          type="password"
-          name="password"
-          onChange={(e) => setPassword(e.target.value)}
-          placeholder="Password"
-          className="w-full p-2 rounded-md bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
 
-        {error && (
-          <p className="text-red-400 text-sm font-bold w-3/4 text-center">
-            {error}
-          </p>
-        )}
-
-        <button
-          type="submit"
-          disabled={loading}
-          className="bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 transition-colors font-bold uppercase tracking-tight"
-        >
-          {loading ? "Cargando..." : "Register"}
-        </button>
-      </form>
+      {/* DERECHA (desktop) / ABAJO (mobile): Texto Informativo */}
+      <div className="w-full md:w-1/2 h-auto md:h-full p-4 md:p-8 flex flex-col items-center justify-center bg-zinc-700/30 border-t md:border-t-0 md:border-l border-gray-700">
+        <h2 className="text-white text-xl font-semibold text-center uppercase tracking-widest">
+          Únete
+        </h2>
+        <p className="text-gray-400 text-center mt-2 leading-relaxed">
+          Please enter your details to create a new account and start playing.
+        </p>
+      </div>
     </div>
   );
 }
