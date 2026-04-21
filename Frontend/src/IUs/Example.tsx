@@ -13,7 +13,7 @@ function Example() {
           Example Button
         </button>
         {/*<button onClick={testSupabase}>Test Supabase</button>   */}
-        <button onClick={testSupabase}>Test Supabase</button>
+        <button onClick={testSupabase}>Test Supabasee</button>
       </Link>
       <TestConnection />
     </div>
