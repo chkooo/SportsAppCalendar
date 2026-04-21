@@ -100,7 +100,7 @@ function Register({ onSuccess }: RegisterProps) {
         <form className="w-full flex flex-col gap-4" onSubmit={handleSubmit}>
           <input
             type="text"
-            placeholder="Name"
+            placeholder="Nombre"
             value={name}
             onChange={(e) => setName(e.target.value)}
             className="p-2 rounded-lg bg-zinc-700 text-white focus:outline-none focus:ring-2 focus:ring-green-500"
@@ -114,14 +114,14 @@ function Register({ onSuccess }: RegisterProps) {
           />
           <input
             type="tel"
-            placeholder="Phone"
+            placeholder="Telefono"
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
             className="p-2 rounded-lg bg-zinc-700 text-white focus:outline-none focus:ring-2 focus:ring-green-500"
           />
           <input
             type="password"
-            placeholder="Password"
+            placeholder="Contraseña"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             className="p-2 rounded-lg bg-zinc-700 text-white focus:outline-none focus:ring-2 focus:ring-green-500"
@@ -132,7 +132,7 @@ function Register({ onSuccess }: RegisterProps) {
             disabled={loading}
             className="bg-green-500 text-white py-2 rounded-lg font-bold uppercase disabled:opacity-50"
           >
-            {loading ? "Cargando..." : "Register"}
+            {loading ? "Cargando..." : "Registrar"}
           </button>
         </form>
       </div>
@@ -143,7 +143,7 @@ function Register({ onSuccess }: RegisterProps) {
           Únete
         </h2>
         <p className="text-gray-400 text-center mt-2 leading-relaxed">
-          Please enter your details to create a new account and start playing.
+          Ingresa tus datos para registrarte y comenzar a jugar.
         </p>
       </div>
     </div>
