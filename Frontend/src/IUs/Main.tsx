@@ -1,12 +1,13 @@
 import RSCard from "../components/RSCard";
 import { useEffect, useState } from "react";
+import { apiFetch } from "../api_url";
 
 function Main() {
   const imgRoute = "/src/assets/loremIMG.svg";
   const [resources, setResources] = useState<any[]>([]);
 
   useEffect(() => {
-    fetch("http://localhost:3000/resources")
+    apiFetch("/resources")
       .then((res) => res.json())
       .then((data) => setResources(Array.isArray(data) ? data : []))
       .catch((err) => console.error("Error al cargar recursos:", err));
@@ -42,6 +43,7 @@ function Main() {
         {resources.map((res) => (
           <RSCard
             key={res.id}
+            id={res.id}
             name={res.name}
             description={res.description}
             price={res.pricePerHour}

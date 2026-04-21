@@ -6,6 +6,7 @@ interface UserProps {
   role: string;
   status: string;
   onToggle: (id: string, currentStatus: string) => void; // 👈 nuevo prop
+  onEdit: (user: any) => void; // 👈 nuevo prop para editar
 }
 
 function UserAdminTB({
@@ -16,6 +17,7 @@ function UserAdminTB({
   role,
   status,
   onToggle,
+  onEdit,
 }: UserProps) {
   return (
     <div className="w-full grid grid-cols-[0.5fr_2fr_2fr_1.5fr_1fr_1fr_2fr] gap-4 items-center bg-black/10 border border-t-2 border-l-2 border-gray-500 rounded-lg p-2 mb-2 font-sans text-sm text-gray-100 transition-colors hover:bg-white/20">
@@ -36,7 +38,20 @@ function UserAdminTB({
         {status}
       </div>
       <div className="flex justify-end items-center">
-        <button className="bg-blue-500 text-white px-2 py-1 rounded-lg mr-2 hover:bg-blue-600 transition-colors text-xs font-bold">
+        <button
+          onClick={() =>
+            onEdit({
+              id,
+              name,
+              email,
+              phone,
+              role,
+              status,
+              active: status === "Activo",
+            })
+          }
+          className="bg-blue-500 text-white px-2 py-1 rounded-lg mr-2 hover:bg-blue-600 transition-colors text-xs font-bold"
+        >
           Editar
         </button>
         <button

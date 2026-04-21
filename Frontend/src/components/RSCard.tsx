@@ -1,17 +1,28 @@
+import { useNavigate } from "react-router-dom";
+
 function RSCard({
+  id,
   name,
   description,
   price,
 }: {
+  id: string;
   name: string;
   description: string;
   price: any;
 }) {
+  const navigate = useNavigate();
   const imgRoute = "/src/assets/loremCancha.svg";
+
+  const handleCardClick = () => {
+    navigate(`/resource/${id}`);
+  };
+
   return (
     <div
+      onClick={handleCardClick}
       className="bg-black/30 border border-t-2 border-l-2 border-gray-500 rounded-lg shadow-md p-4 pt-0 font-sans antialiased max-w-72 w-full justify-center
-    align-items-center flex flex-col"
+    align-items-center flex flex-col cursor-pointer hover:bg-black/50 transition-colors"
     >
       <img
         src={imgRoute}

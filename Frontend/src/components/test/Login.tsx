@@ -1,18 +1,22 @@
 import { supabase } from "../../lib/supabase";
 import { useState } from "react";
 
-function Login() {
+interface LoginProps {
+  onSuccess?: () => void;
+}
+
+function Login({ onSuccess }: LoginProps) {
+  // ✅ un solo ')' aquí
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
     setError("");
 
-    // Validación y limpieza
     const cleanEmail = email.trim().toLowerCase();
     const cleanPassword = password.trim();
 
@@ -57,12 +61,13 @@ function Login() {
       return;
     }
 
+    // ✅ sin duplicados, limpio
     console.log("Login exitoso:", data);
+    onSuccess?.();
   };
 
   return (
     <div className="bg-zinc-800 flex flex-col md:flex-row items-center w-full h-fit overflow-hidden rounded-lg self-start">
-      {/* LADO IZQUIERDO (desktop) / ARRIBA (mobile): Texto Informativo */}
       <div className="w-full md:w-1/2 h-auto md:h-full p-4 md:p-8 flex flex-col items-center justify-center bg-zinc-700/30 border-b md:border-b-0 md:border-r border-gray-700">
         <h2 className="text-white text-xl font-semibold text-center uppercase tracking-widest">
           Bienvenido
@@ -72,7 +77,6 @@ function Login() {
         </p>
       </div>
 
-      {/* LADO DERECHO (desktop) / ABAJO (mobile): Formulario */}
       <div className="w-full md:w-1/2 h-auto md:h-full p-4 md:p-8 flex flex-col items-center justify-center">
         <h1 className="text-2xl font-bold text-white mb-6">Login</h1>
         <form className="w-full flex flex-col gap-4" onSubmit={handleSubmit}>

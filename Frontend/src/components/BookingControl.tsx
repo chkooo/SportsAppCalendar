@@ -1,12 +1,13 @@
 // BookingControl.tsx
 import { useEffect, useState } from "react";
 import BookingAdminTB from "./DashboardComponents/BookingAdminTB";
+import { apiFetch } from "../api_url";
 
 function BookingControl() {
   const [bookings, setBookings] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:3000/bookings")
+    apiFetch("/bookings")
       .then((res) => res.json())
       .then((data) => setBookings(data))
       .catch((err) => console.error("Error cargando reservas:", err));

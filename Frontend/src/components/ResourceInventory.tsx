@@ -1,16 +1,78 @@
 // ResourceInventory.tsx
 import { useEffect, useState } from "react";
 import ResourceAdminTB from "./DashboardComponents/ResourceAdminTB";
+import ResourceETB from "./editables/ResourcsETB";
+import { apiFetch } from "../api_url";
 
 function ResourceInventory() {
-  const [resources, setResources] = useState([]);
+  const [resources, setResources] = useState<any[]>([]);
+  const [editingResource, setEditingResource] = useState<any>(null);
 
   useEffect(() => {
-    fetch("http://localhost:3000/resources")
+    apiFetch("/resources")
       .then((res) => res.json())
       .then((data) => setResources(data))
       .catch((err) => console.error("Error cargando canchas:", err));
   }, []);
+
+  const handleEdit = (resource: any) => {
+    setEditingResource(resource);
+  };
+
+  const handleClose = () => {
+    setEditingResource(null);
+  };
+
+  const handleSave = async (data: {
+    name: string;
+    description: string;
+    pricePerHour: number;
+  }) => {
+    if (!editingResource) return;
+    try {
+      await apiFetch(`/resources/${editingResource.id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+      setResources(
+        resources.map((r: any) =>
+          r.id === editingResource.id ? { ...r, ...data } : r,
+        ),
+      );
+      setEditingResource(null);
+    } catch (err) {
+      console.error("Error actualizando recurso:", err);
+    }
+  };
+
+  const handleToggle = async (id: string, currentStatus: string) => {
+    const newStatus =
+      currentStatus === "Disponible" ? "Mantenimiento" : "Disponible";
+
+    // Optimistic update
+    setResources(
+      resources.map((r: any) =>
+        r.id === id ? { ...r, status: newStatus } : r,
+      ),
+    );
+
+    try {
+      await apiFetch(`/resources/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status: newStatus }),
+      });
+    } catch (err) {
+      console.error("Error actualizando estado:", err);
+      // Rollback on error
+      setResources(
+        resources.map((r: any) =>
+          r.id === id ? { ...r, status: currentStatus } : r,
+        ),
+      );
+    }
+  };
 
   return (
     <div className="h-full bg-zinc-900 text-white flex items-center justify-start flex-col gap-6 p-6">
@@ -32,10 +94,27 @@ function ResourceInventory() {
         </div>
         <div className="p-4 max-h-125 overflow-y-auto flex flex-col gap-2">
           {resources.map((r: any) => (
-            <ResourceAdminTB key={r.id} {...r} />
+            <ResourceAdminTB
+              key={r.id}
+              id={r.id}
+              name={r.name}
+              type={r.type}
+              price={parseFloat(r.pricePerHour) || 0}
+              status={r.status}
+              onEdit={handleEdit}
+              onToggle={handleToggle}
+            />
           ))}
         </div>
       </div>
+
+      {editingResource && (
+        <ResourceETB
+          resource={editingResource}
+          onClose={handleClose}
+          onSave={handleSave}
+        />
+      )}
     </div>
   );
 }

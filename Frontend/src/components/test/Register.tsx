@@ -1,7 +1,11 @@
 import { useState } from "react";
 import { supabase } from "../../lib/supabase";
 
-function Register() {
+interface RegisterProps {
+  onSuccess?: () => void;
+}
+
+function Register({ onSuccess }: RegisterProps) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
@@ -86,6 +90,7 @@ function Register() {
     }
 
     console.log("Registro exitoso:", data);
+    onSuccess?.();
   };
   return (
     <div className="bg-zinc-800 flex flex-col md:flex-row items-center w-full h-fit overflow-hidden rounded-lg self-start">

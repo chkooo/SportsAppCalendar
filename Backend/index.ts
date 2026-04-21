@@ -23,6 +23,7 @@ app.route("/blocks", blocks);
 app.get("/", (c) => c.json({ status: "ok", message: "API running 🚀" }));
 Bun.serve({
   port: 3000,
+  hostname: "0.0.0.0",
   fetch: app.fetch,
 });
 

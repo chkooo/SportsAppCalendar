@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import LogAdmin from "./DashboardComponents/LogAdmin";
+import { apiFetch } from "../api_url";
 
 function MantenanceLog() {
   const [blocks, setBlocks] = useState<any[]>([]);
@@ -8,7 +9,7 @@ function MantenanceLog() {
   useEffect(() => {
     // IMPORTANTE: Asegúrate de crear este endpoint en tu backend (routes/resources.ts)
     // para que retorne los datos de la tabla ResourceBlock de Prisma.
-    fetch("http://localhost:3000/blocks")
+    apiFetch("/blocks")
       .then((res) => {
         if (!res.ok) throw new Error("Error en la respuesta del servidor");
         return res.json();

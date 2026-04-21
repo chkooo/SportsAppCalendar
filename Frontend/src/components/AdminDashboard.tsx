@@ -1,6 +1,7 @@
 // AdminDashboard.tsx
 import { useState, useEffect } from "react";
 import Metric from "./DashboardComponents/Metric";
+import { apiFetch } from "../api_url";
 
 function AdminDashboard() {
   // Estado para las métricas reales del sistema
@@ -17,9 +18,9 @@ function AdminDashboard() {
         // En una arquitectura profesional, podrías tener un endpoint /api/dashboard/stats
         // O hacer múltiples fetch paralelos
         const [resUsers, resResources, resBookings] = await Promise.all([
-          fetch("http://localhost:3000/users"),
-          fetch("http://localhost:3000/resources"),
-          fetch("http://localhost:3000/bookings"),
+          apiFetch("/users"),
+          apiFetch("/resources"),
+          apiFetch("/bookings"),
         ]);
 
         const usersData = await resUsers.json();

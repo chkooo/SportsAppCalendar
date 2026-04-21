@@ -14,7 +14,7 @@ resources.get("/:id", async (c) => {
   const id = c.req.param("id");
   const resource = await prisma.resource.findUnique({
     where: { id },
-    include: { resourceType: true, schedules: true },
+    include: { resourceType: true, schedules: true, bookings: true },
   });
   if (!resource) return c.json({ error: "Resource not found" }, 404);
   return c.json(resource);

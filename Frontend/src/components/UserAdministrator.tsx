@@ -1,14 +1,18 @@
 import { useEffect, useState } from "react";
 import UserAdminTB from "./DashboardComponents/UserAdminTB";
+import UserETB from "./editables/UserETB";
+import { apiFetch } from "../api_url";
 
 function UserAdministrator() {
   const [users, setUsers] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [editingUser, setEditingUser] = useState<any>(null);
 
   useEffect(() => {
     const getUsers = async () => {
       try {
-        const response = await fetch("http://localhost:3000/users");
+        const response = await apiFetch("/users");
         const data = await response.json();
         setUsers(data);
       } catch (error) {
@@ -24,7 +28,7 @@ function UserAdministrator() {
   const handleToggle = async (id: string, currentStatus: string) => {
     const newActive = currentStatus !== "Activo";
     try {
-      const response = await fetch(`http://localhost:3000/users/${id}`, {
+      const response = await apiFetch(`/users/${id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ active: newActive }),
@@ -37,6 +41,40 @@ function UserAdministrator() {
     } catch (error) {
       console.error("Error al cambiar estado:", error);
     }
+  };
+
+  const handleEdit = (user: any) => {
+    setEditingUser(user);
+    setShowEditModal(true);
+  };
+
+  const handleSaveEdit = async (updatedData: any) => {
+    try {
+      const response = await apiFetch(`/users/${editingUser.id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: updatedData.name,
+          phone: updatedData.phone,
+          avatarUrl: updatedData.avatarUrl,
+        }),
+      });
+      if (!response.ok) throw new Error("Error al actualizar usuario");
+
+      const updatedUser = await response.json();
+      setUsers((prev: any[]) =>
+        prev.map((u) => (u.id === editingUser.id ? updatedUser : u)),
+      );
+      setShowEditModal(false);
+      setEditingUser(null);
+    } catch (error) {
+      console.error("Error al guardar cambios:", error);
+    }
+  };
+
+  const handleCloseEdit = () => {
+    setShowEditModal(false);
+    setEditingUser(null);
   };
 
   return (
@@ -89,6 +127,7 @@ function UserAdministrator() {
                 role={user.memberships[0]?.role || "N/A"}
                 status={user.active ? "Activo" : "Inactivo"}
                 onToggle={handleToggle} // 👈 pasado aquí
+                onEdit={handleEdit} // 👈 nuevo
               />
             ))
           ) : (
@@ -98,6 +137,14 @@ function UserAdministrator() {
           )}
         </div>
       </div>
+
+      {showEditModal && editingUser && (
+        <UserETB
+          user={editingUser}
+          onClose={handleCloseEdit}
+          onSave={handleSaveEdit}
+        />
+      )}
     </div>
   );
 }
