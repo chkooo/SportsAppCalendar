@@ -1,5 +1,8 @@
 import { Link } from "react-router-dom";
 import { TestConnection } from "../Others/apiHookTest";
+import { testSupabase } from "../test";
+import Login from "../components/test/Login";
+export { testSupabase } from "../test";
 
 function Example() {
   return (
@@ -9,6 +12,8 @@ function Example() {
         <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
           Example Button
         </button>
+        {/*<button onClick={testSupabase}>Test Supabase</button>   */}
+        <button onClick={testSupabase}>Test Supabase</button>
       </Link>
       <TestConnection />
     </div>

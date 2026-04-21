@@ -5,6 +5,7 @@ import { users } from "./routes/users.ts";
 import { resources } from "./routes/resources.ts";
 import { bookings } from "./routes/bookings.ts";
 import { payments } from "./routes/payments.ts";
+import { blocks } from "./routes/blocks.ts";
 
 const app = new Hono();
 
@@ -17,12 +18,12 @@ app.route("/users", users);
 app.route("/resources", resources);
 app.route("/bookings", bookings);
 app.route("/payments", payments);
+app.route("/blocks", blocks);
 
-// Health check
 app.get("/", (c) => c.json({ status: "ok", message: "API running 🚀" }));
-
 Bun.serve({
   port: 3000,
+  hostname: "0.0.0.0",
   fetch: app.fetch,
 });
 

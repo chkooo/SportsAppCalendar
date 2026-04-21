@@ -1,41 +1,47 @@
+// BookingControl.tsx
+import { useEffect, useState } from "react";
 import BookingAdminTB from "./DashboardComponents/BookingAdminTB";
-function BookingControl() {
-  return (
-    <div className="h-full bg-zinc-900 text-white flex items-center justify-start flex-col gap-6 ">
-      <h1 className="text-4xl font-bold">Reservaciones</h1>
+import { apiFetch } from "../api_url";
 
-      <div className="w-full h-auto bg-zinc-800 flex items-center px-4 flex-col gap-4">
-        <div className="w-full grid grid-cols-[0.5fr_2fr_1.5fr_1.5fr_1fr_1fr_2fr] gap-4 px-4 py-3 bg-zinc-800 border-t-2 border-l-2 border-gray-600 rounded-t-lg shadow-lg">
-          <div className="text-gray-400 font-black text-xs uppercase tracking-widest">
-            ID
-          </div>
-          <div className="text-gray-400 font-black text-xs uppercase tracking-widest">
-            Usuario
-          </div>
-          <div className="text-gray-400 font-black text-xs uppercase tracking-widest">
-            Canchas
-          </div>
-          <div className="text-gray-400 font-black text-xs uppercase tracking-widest">
-            Fecha
-          </div>
-          <div className="text-gray-400 font-black text-xs uppercase tracking-widest text-center">
-            Hora
-          </div>
-          <div className="text-gray-400 font-black text-xs uppercase tracking-widest text-center">
-            Estado
-          </div>
-          <div className="text-gray-400 font-black text-xs uppercase tracking-widest text-right">
-            Acciones
-          </div>
+function BookingControl() {
+  const [bookings, setBookings] = useState([]);
+
+  useEffect(() => {
+    apiFetch("/bookings")
+      .then((res) => res.json())
+      .then((data) => setBookings(data))
+      .catch((err) => console.error("Error cargando reservas:", err));
+  }, []);
+
+  return (
+    <div className="h-full bg-zinc-900 text-white flex items-center justify-start flex-col gap-6 p-6">
+      <h1 className="text-4xl font-black tracking-tighter italic">
+        RESERVACIONES ACTIVAS
+      </h1>
+
+      <div className="w-full flex flex-col bg-zinc-800 rounded-xl overflow-hidden border border-zinc-700">
+        <div className="w-full grid grid-cols-[0.5fr_2fr_1.5fr_1.5fr_1fr_1fr_2fr] gap-4 px-4 py-4 bg-zinc-800/50 border-b border-zinc-700 text-[10px] font-black text-gray-500 uppercase tracking-widest">
+          <div>ID</div>
+          <div>Cliente</div>
+          <div>Cancha</div>
+          <div>Fecha</div>
+          <div className="text-center">Hora</div>
+          <div className="text-center">Estado</div>
+          <div className="text-right">Acciones</div>
         </div>
-        <BookingAdminTB
-          id={1}
-          user="Juan Pérez"
-          resource="Cancha 1"
-          date="2024-05-20"
-          time="18:00"
-          status="Confirmado"
-        />
+        <div className="p-4 max-h-125 overflow-y-auto flex flex-col gap-2">
+          {bookings.map((b: any) => (
+            <BookingAdminTB
+              key={b.id}
+              id={b.id}
+              user={b.user?.name || "Anónimo"} // Prisma relation
+              resource={b.resource?.name || "N/A"} // Prisma relation
+              date={b.date}
+              time={b.time}
+              status={b.status}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );

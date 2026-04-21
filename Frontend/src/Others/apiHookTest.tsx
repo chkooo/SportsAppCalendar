@@ -1,14 +1,13 @@
 import { useEffect } from "react";
+import { apiFetch } from "../api_url";
 
 export function TestConnection() {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        console.log(
-          "🚀 Intentando conectar con el API en http://localhost:3000/users...",
-        );
+        console.log("🚀 Intentando conectar con el API...");
 
-        const response = await fetch("http://localhost:3000/users");
+        const response = await apiFetch("/users");
 
         if (!response.ok) {
           throw new Error(`Error en la respuesta: ${response.status}`);

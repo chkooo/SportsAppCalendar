@@ -14,7 +14,7 @@ resources.get("/:id", async (c) => {
   const id = c.req.param("id");
   const resource = await prisma.resource.findUnique({
     where: { id },
-    include: { resourceType: true, schedules: true },
+    include: { resourceType: true, schedules: true, bookings: true },
   });
   if (!resource) return c.json({ error: "Resource not found" }, 404);
   return c.json(resource);
@@ -37,4 +37,17 @@ resources.delete("/:id", async (c) => {
   const id = c.req.param("id");
   await prisma.resource.delete({ where: { id } });
   return c.json({ message: "Deleted" });
+});
+
+resources.get("/blocks", async (c) => {
+  try {
+    const blocks = await prisma.resourceBlock.findMany({
+      include: {
+        resource: true,
+      },
+    });
+    return c.json(blocks);
+  } catch (error) {
+    return c.json({ error: "Error al obtener bloques de mantenimiento" }, 500);
+  }
 });
