@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { apiFetch } from "../api_url";
 
 function Main() {
-  const imgRoute = "/src/assets/loremIMG.svg";
+  const imgRoute = "./src/assets/MainPhoto.svg";
   const [resources, setResources] = useState<any[]>([]);
 
   useEffect(() => {
@@ -21,14 +21,10 @@ function Main() {
             className="w-full h-full object-cover"
             alt="Logo SAC"
           />
-          {/* Añadimos padding lateral (px-4) para que el texto no pegue en los bordes en móvil */}
+          <div className="absolute inset-0 bg-black/50" />
+
           <div className="absolute inset-0 flex items-center justify-center px-4">
-            {/* Cambiamos text-6xl por:
-               text-3xl: para móviles.
-               sm:text-5xl: para tablets.
-               md:text-6xl: para escritorio (tu valor original).
-            */}
-            <h2 className="text-white text-3xl sm:text-5xl md:text-6xl font-black uppercase italic text-center leading-tight">
+            <h2 className="text-white text-3xl sm:text-5xl md:text-6xl font-black uppercase italic text-center leading-tight drop-shadow-lg">
               Vive la experiencia deportiva con Sport-App
             </h2>
           </div>

@@ -73,7 +73,7 @@ function Login({ onSuccess }: LoginProps) {
           Bienvenido
         </h2>
         <p className="text-gray-400 text-center mt-2 leading-relaxed">
-          Please enter your credentials to access the platform.
+          Introduzca sus datos de acceso para acceder a la plataforma.
         </p>
       </div>
 
@@ -89,7 +89,7 @@ function Login({ onSuccess }: LoginProps) {
           />
           <input
             type="password"
-            placeholder="Password"
+            placeholder="Contraseña"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             className="p-2 rounded-lg bg-zinc-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -100,7 +100,7 @@ function Login({ onSuccess }: LoginProps) {
             disabled={loading}
             className="bg-blue-500 text-white py-2 rounded-lg font-bold uppercase disabled:opacity-50"
           >
-            {loading ? "Cargando..." : "Log In"}
+            {loading ? "Cargando..." : "Iniciar Sesión"}
           </button>
         </form>
       </div>
