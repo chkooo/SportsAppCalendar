@@ -1,6 +1,7 @@
 # Root
 node_modules/
 bun.lock
+AGENTS.md
 
 # Backend
 Backend/node_modules/

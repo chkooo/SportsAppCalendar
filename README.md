@@ -12,13 +12,14 @@
 | --------------------------------- | ---------------- |
 | Autenticación (Sign In / Sign Up) | ✅ Funcionando   |
 | Conexión con Supabase             | ✅ Funcionando   |
-| API REST (Hono + Prisma)          | ✅ Funcionando   |
-| CRUD de Recursos (Canchas)        | 🔄 ~50% completo |
+| API REST (Hono + Prisma)          | ✅ 95% completo |
+| CRUD de Recursos (Backend)        | ✅ Completado    |
+| CRUD de Recursos (Frontend)       | 🔄 ~60% completo |
 | Visualización de Canchas          | ✅ Funcionando   |
-| Sistema de Reservas               | ✅ Funcionando   |
+| Sistema de Reservas               | ✅ Completado    |
+| Notificaciones (Email)            | ✅ Funcionando   |
 | Panel de Administración           | 🔄 En progreso   |
-| Notificaciones de Reserva         | ⏳ Pendiente     |
-| Pagos / Transferencias            | ⏳ Pendiente     |
+| Pagos / Transferencias            | 🔄 Modelo listo |
 
 ---
 
@@ -26,9 +27,9 @@
 
 ### Frontend
 
-- **React 18** (Vite) — Biblioteca principal para la UI
+- **React 19** (Vite) — Biblioteca principal para la UI
 - **TypeScript** — Desarrollo seguro y tipado
-- **Tailwind CSS v4** — Estilizado moderno y eficiente
+- **Tailwind CSS v4** — Estilizado moderno (via `@tailwindcss/vite`, sin `tailwind.config.js`)
 - **React Router** — Navegación y rutas protegidas
 - **Supabase JS** — Cliente de autenticación en el frontend
 - **Bun** — Runtime ultrarrápido para gestión de paquetes
@@ -79,14 +80,48 @@ SportsAppCalendar/
 │       ├── lib/      # Cliente de Supabase
 │       └── routes/
 ├── Backend/          # Bun + Hono + Prisma
-│   ├── src/
-│   │   └── routes/   # clients, users, resources, bookings, payments
+│   ├── routes/      # clients, users, resources, bookings, payments, blocks
 │   ├── prisma/
 │   │   └── schema.prisma
 │   └── index.ts
 ├── package.json      # Scripts raíz
 └── README.md
 ```
+
+---
+
+## Componentes Frontend
+
+### Páginas (`IUs/`)
+- `Main.tsx` - Vista principal/público
+- `Admin.tsx` - Panel de administración
+- `Pg.tsx` - Página de reservas de usuario
+- `ResourceDetail.tsx` - Detalles de recurso
+
+### Autenticación
+- `Login.tsx` - Iniciar sesión
+- `Register.tsx` - Registrarse
+- `AuthConteiner.tsx` - Contenedor de auth
+
+### Dashboard
+- `AdminDashboard.tsx` - Vista principal admin
+- `Metric.tsx` - Tarjetas de estadísticas
+- `UserAdminTB.tsx` - Tabla de usuarios
+- `ResourceAdminTB.tsx` - Tabla de recursos
+- `BookingAdminTB.tsx` - Tabla de reservas
+- `LogAdmin.tsx` - bitácora de actividad
+
+### Editables
+- `UserETB.tsx` - Editar usuario
+- `ResourcsETB.tsx` - Editar recurso
+
+### Core
+- `RSCard.tsx` - Tarjeta de recurso
+- `ResourceInventory.tsx` - Inventario de recursos
+- `BookingControl.tsx` - Control de reservas
+- `UserAdministrator.tsx` - Administración de usuarios
+- `MaintenanceLog.tsx` - bitácora de mantenimiento
+- `Menu.tsx` - Navegación
 
 ---
 
@@ -108,9 +143,8 @@ cd SportsAppCalendar
 
 ```bash
 bun install
-cd Frontend && bun install
-cd ../Backend && bun install
 ```
+> Las dos carpetas (Frontend y Backend) se instalan automáticamente via concurrently
 
 ### 3. Configurar variables de entorno
 
@@ -144,7 +178,19 @@ bun dev
 bun devh
 ```
 
-El frontend corre en `http://localhost:5173` y el backend en `http://localhost:3000`.
+---
+
+## Endpoints API
+
+| Route | Métodos | Descripción |
+|-------|--------|-------------|
+| `/clients` | GET, POST | CRUD clientes |
+| `/users` | GET, POST, PUT, PATCH, DELETE | CRUD usuarios + toggle active |
+| `/resources` | GET, POST, PUT, DELETE | CRUD recursos |
+| `/resources/blocks` | GET | Lista bloqueos mantenimiento |
+| `/bookings` | GET, POST, PUT, DELETE | Reservas + conflict detection + email |
+| `/payments` | GET, POST, PUT, DELETE | CRUD pagos |
+| `/blocks` | GET, POST, DELETE | Bloqueos mantenimiento |
 
 ---
 
@@ -153,4 +199,11 @@ El frontend corre en `http://localhost:5173` y el backend en `http://localhost:3
 | Comando    | Descripción                                 |
 | ---------- | ------------------------------------------- |
 | `bun dev`  | Corre frontend y backend en modo desarrollo |
-| `bun devh` | Corre en modo red local (`--host`)          |
+| `bun devh` | Corre en modo red local (`--host`) |
+
+### Puertos
+
+| Servicio | Puerto |
+|----------|--------|
+| Frontend (Vite) | 5173 |
+| Backend (Hono) | 3000 |
