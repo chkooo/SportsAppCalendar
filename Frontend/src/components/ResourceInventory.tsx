@@ -13,16 +13,23 @@ function ResourceInventory() {
   const [creatingResource, setCreatingResource] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
 
+  const fetchResources = async () => {
+    try {
+      const [resourcesRes, typesRes] = await Promise.all([
+        apiFetch("/resources"),
+        apiFetch("/resource-types"),
+      ]);
+      const resourcesData = await resourcesRes.json();
+      const typesData = await typesRes.json();
+      setResources(Array.isArray(resourcesData) ? resourcesData : []);
+      setResourceTypes(Array.isArray(typesData) ? typesData : []);
+    } catch (err) {
+      console.error("Error cargando datos:", err);
+    }
+  };
+
   useEffect(() => {
-    Promise.all([
-      apiFetch("/resources").then((res) => res.json()),
-      apiFetch("/resource-types").then((res) => res.json()),
-    ])
-      .then(([resourcesData, typesData]) => {
-        setResources(resourcesData);
-        setResourceTypes(typesData);
-      })
-      .catch((err) => console.error("Error cargando datos:", err));
+    fetchResources();
   }, []);
 
   const handleEdit = (resource: Resource) => {
@@ -49,12 +56,8 @@ function ResourceInventory() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
-      setResources(
-        resources.map((r) =>
-          r.id === editingResource.id ? { ...r, ...data } : r,
-        ),
-      );
       setEditingResource(null);
+      fetchResources();
     } catch (err) {
       console.error("Error actualizando recurso:", err);
     }
@@ -62,18 +65,13 @@ function ResourceInventory() {
 
   const handleCreate = async (data: ResourceFormData) => {
     try {
-      const res = await apiFetch("/resources", {
+      await apiFetch("/resources", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
-      const newResource = await res.json();
-      const type = resourceTypes.find((t) => t.id === data.resourceTypeId);
-      setResources([
-        ...resources,
-        { ...newResource, resourceType: type },
-      ]);
       setCreatingResource(false);
+      fetchResources();
     } catch (err) {
       console.error("Error creando recurso:", err);
     }
@@ -101,6 +99,15 @@ function ResourceInventory() {
           r.id === id ? { ...r, active: currentActive } : r,
         ),
       );
+    }
+  };
+
+  const handleDelete = async (id: string) => {
+    try {
+      await apiFetch(`/resources/${id}`, { method: "DELETE" });
+      fetchResources();
+    } catch (err) {
+      console.error("Error eliminando recurso:", err);
     }
   };
 
@@ -151,6 +158,7 @@ function ResourceInventory() {
               active={r.active}
               onEdit={handleEdit}
               onToggle={handleToggle}
+              onDelete={handleDelete}
             />
           ))}
         </div>

@@ -1,5 +1,5 @@
 import { useState, useEffect, type React } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { supabase } from "../lib/supabase";
 import AuthContainer from "./AuthConteiner";
@@ -10,6 +10,8 @@ import ProfileETB from "./editables/ProfileETB";
 function Menu() {
   const imgRoute = "/src/assets/logoSAC.svg";
   const { session } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
   const [showAuth, setShowAuth] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [userRole, setUserRole] = useState<string | null>(null);
@@ -19,6 +21,7 @@ function Menu() {
   const userName = session?.user?.user_metadata?.name || "Usuario";
   const userInitial = session ? userName.charAt(0).toUpperCase() : "?";
   const isAdmin = userRole === "ADMIN" || userRole === "SUPERADMIN";
+  const isOnAdminPage = location.pathname === "/admin";
 
   useEffect(() => {
     if (!session?.user?.id) {
@@ -54,6 +57,9 @@ function Menu() {
     setMobileMenuOpen(false);
     setUserRole(null);
     setUserData(null);
+    if (isOnAdminPage) {
+      navigate("/");
+    }
   };
 
   const handleProfileClick = () => {

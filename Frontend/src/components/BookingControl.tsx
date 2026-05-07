@@ -1,6 +1,7 @@
 // BookingControl.tsx
 import { useEffect, useState } from "react";
 import BookingAdminTB from "./DashboardComponents/BookingAdminTB";
+import { ConfirmModal } from "./ui/Modal";
 import { apiFetch } from "../api_url";
 import { Booking, BookingStatus } from "../types/booking";
 
@@ -11,6 +12,10 @@ function BookingControl() {
   const [statusFilter, setStatusFilter] = useState<string>("");
   const [fromDate, setFromDate] = useState<string>("");
   const [toDate, setToDate] = useState<string>("");
+
+  const [showCancelModal, setShowCancelModal] = useState(false);
+  const [cancellingId, setCancellingId] = useState<string | null>(null);
+  const [cancelling, setCancelling] = useState(false);
 
   const fetchBookings = async () => {
     setLoading(true);
@@ -39,11 +44,16 @@ function BookingControl() {
     fetchBookings();
   };
 
-  const handleCancelBooking = async (id: string) => {
-    if (!confirm("¿Estás seguro de cancelar esta reserva?")) return;
+  const handleCancelClick = (id: string) => {
+    setCancellingId(id);
+    setShowCancelModal(true);
+  };
 
+  const handleConfirmCancel = async () => {
+    if (!cancellingId) return;
+    setCancelling(true);
     try {
-      const res = await apiFetch(`/bookings/${id}`, {
+      const res = await apiFetch(`/bookings/${cancellingId}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ status: "CANCELLED" }),
@@ -51,12 +61,13 @@ function BookingControl() {
 
       if (res.ok) {
         fetchBookings();
-      } else {
-        const data = await res.json();
-        alert(data.error || "Error al cancelar");
       }
     } catch (err) {
       console.error("Error:", err);
+    } finally {
+      setCancelling(false);
+      setShowCancelModal(false);
+      setCancellingId(null);
     }
   };
 
@@ -151,12 +162,27 @@ function BookingControl() {
                 date={booking.date}
                 time={`${booking.startTime} - ${booking.endTime}`}
                 status={booking.status}
-                onCancel={() => handleCancelBooking(booking.id)}
+                onCancel={() => handleCancelClick(booking.id)}
               />
             ))
           )}
         </div>
       </div>
+
+      <ConfirmModal
+        isOpen={showCancelModal}
+        onClose={() => {
+          setShowCancelModal(false);
+          setCancellingId(null);
+        }}
+        onConfirm={handleConfirmCancel}
+        title="Cancelar Reserva"
+        message="¿Estás seguro de cancelar esta reserva?"
+        confirmText="Cancelar Reserva"
+        cancelText="Mantener"
+        variant="danger"
+        loading={cancelling}
+      />
     </div>
   );
 }
