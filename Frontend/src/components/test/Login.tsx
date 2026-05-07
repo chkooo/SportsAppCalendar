@@ -6,13 +6,12 @@ interface LoginProps {
 }
 
 function Login({ onSuccess }: LoginProps) {
-  // ✅ un solo ')' aquí
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
     setError("");
@@ -61,7 +60,6 @@ function Login({ onSuccess }: LoginProps) {
       return;
     }
 
-    // ✅ sin duplicados, limpio
     console.log("Login exitoso:", data);
     onSuccess?.();
   };

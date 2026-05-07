@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { TestConnection } from "../Others/apiHookTest";
 import { testSupabase } from "../test";
-import Login from "../components/test/Login";
+
 export { testSupabase } from "../test";
 
 function Example() {

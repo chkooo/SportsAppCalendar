@@ -251,17 +251,17 @@ function ResourceDetail() {
 
   if (loading || authLoading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="text-white text-2xl">Cargando...</div>
+      <div className="flex items-center justify-center min-h-screen bg-zinc-100 dark:bg-zinc-900">
+        <div className="text-zinc-800 dark:text-white text-2xl">Cargando...</div>
       </div>
     );
   }
 
   if (!session) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
+      <div className="flex items-center justify-center min-h-screen bg-zinc-100 dark:bg-zinc-900">
         <div className="text-center">
-          <div className="text-white text-2xl mb-4">
+          <div className="text-zinc-800 dark:text-white text-2xl mb-4">
             Debes iniciar sesión para hacer una reserva
           </div>
           <button
@@ -277,14 +277,14 @@ function ResourceDetail() {
 
   if (!resource) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="text-white text-2xl">Cancha no encontrada</div>
+      <div className="flex items-center justify-center min-h-screen bg-zinc-100 dark:bg-zinc-900">
+        <div className="text-zinc-800 dark:text-white text-2xl">Cancha no encontrada</div>
       </div>
     );
   }
 
   return (
-    <div className="bg-zinc-900 min-h-screen pb-10">
+    <div className="min-h-screen pb-10 bg-zinc-100 dark:bg-zinc-900">
       <button
         onClick={() => navigate("/")}
         className="m-4 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
@@ -301,7 +301,7 @@ function ResourceDetail() {
             className="w-full h-64 object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent flex flex-col justify-end p-6">
-            <h1 className="text-4xl font-bold text-white mb-2">
+            <h1 className="text-4xl font-bold text-white">
               {resource.name}
             </h1>
             <p className="text-gray-200 text-lg">{resource.description}</p>
@@ -310,38 +310,38 @@ function ResourceDetail() {
 
         {/* Info y selector de fecha */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-          <div className="bg-zinc-800 p-6 rounded-lg">
-            <p className="text-gray-400 text-sm">Precio por hora</p>
-            <p className="text-3xl font-bold text-emerald-400">
+          <div className="bg-zinc-200 dark:bg-zinc-800 border-2 border-zinc-800 dark:border-zinc-600 p-6 rounded-lg">
+            <p className="text-zinc-600 dark:text-gray-400 text-sm">Precio por hora</p>
+            <p className="text-3xl font-bold text-emerald-600 dark:text-emerald-400">
               ${resource.pricePerHour}
             </p>
           </div>
 
-          <div className="bg-zinc-800 p-6 rounded-lg md:col-span-2">
-            <label className="block text-gray-300 text-sm mb-2">
+          <div className="bg-zinc-200 dark:bg-zinc-800 border-2 border-zinc-800 dark:border-zinc-600 p-6 rounded-lg md:col-span-2">
+            <label className="block text-zinc-700 dark:text-gray-300 text-sm mb-2">
               Selecciona una fecha:
             </label>
             <input
               type="date"
               value={selectedDate}
               onChange={(e) => setSelectedDate(e.target.value)}
-              className="w-full px-4 py-2 bg-zinc-700 border border-zinc-600 rounded text-white focus:outline-none focus:border-blue-500"
+              className="w-full px-4 py-2 bg-zinc-300 dark:bg-zinc-700 border-2 border-zinc-800 dark:border-zinc-500 text-zinc-800 dark:text-white rounded focus:outline-none focus:border-blue-500"
             />
           </div>
         </div>
 
         {/* Horarios */}
-        <div className="bg-zinc-800 rounded-lg p-6">
+        <div className="bg-zinc-200 dark:bg-zinc-800 border-2 border-zinc-800 dark:border-zinc-600 rounded-lg p-6">
           <div className="mb-6">
-            <h2 className="text-2xl font-bold text-white mb-2">
+            <h2 className="text-2xl font-bold text-zinc-800 dark:text-white mb-2">
               Horarios para {daysOfWeek[new Date(selectedDate).getDay()]}
             </h2>
             {schedule ? (
-              <p className="text-gray-400">
+              <p className="text-zinc-600 dark:text-gray-400">
                 Apertura: {schedule.openTime} - Cierre: {schedule.closeTime}
               </p>
             ) : (
-              <p className="text-yellow-400">
+              <p className="text-yellow-600 dark:text-yellow-400">
                 No hay servicio disponible para este día
               </p>
             )}
@@ -365,10 +365,10 @@ function ResourceDetail() {
                     disabled={isBlocked}
                     className={`p-4 rounded-lg text-center font-semibold cursor-pointer transition ${
                       isBlocked
-                        ? "bg-red-900/50 text-red-300 border border-red-700 cursor-not-allowed"
+                        ? "bg-red-100 text-red-700 border border-red-300 dark:bg-red-900/50 dark:text-red-300 dark:border-red-700"
                         : isSelected
                           ? "bg-blue-600 text-white border border-blue-400"
-                          : "bg-emerald-900/50 text-emerald-300 border border-emerald-700 hover:bg-emerald-800 hover:text-emerald-100"
+                          : "bg-emerald-100 text-emerald-700 border border-emerald-300 hover:bg-emerald-200 hover:text-emerald-800 dark:bg-emerald-900/50 dark:text-emerald-300 dark:border-emerald-700 dark:hover:bg-emerald-800 dark:hover:text-emerald-100"
                     }`}
                   >
                     <div className="text-sm">{startTime}</div>
@@ -384,33 +384,33 @@ function ResourceDetail() {
               })}
             </div>
           ) : (
-            <p className="text-gray-400">No hay horarios para este día</p>
+            <p className="text-zinc-600 dark:text-gray-400">No hay horarios para este día</p>
           )}
 
           {/* Leyenda */}
           <div className="mt-8 flex flex-col sm:flex-row gap-4 text-sm">
             <div className="flex items-center gap-2">
-              <div className="w-4 h-4 bg-emerald-900/50 border border-emerald-700 rounded"></div>
-              <span className="text-gray-300">Disponible</span>
+              <div className="w-4 h-4 bg-emerald-100 border border-emerald-300 rounded dark:bg-emerald-900/50 dark:border-emerald-700"></div>
+              <span className="text-zinc-600 dark:text-gray-300">Disponible</span>
             </div>
             <div className="flex items-center gap-2">
-              <div className="w-4 h-4 bg-red-900/50 border border-red-700 rounded"></div>
-              <span className="text-gray-300">No disponible</span>
+              <div className="w-4 h-4 bg-red-100 border border-red-300 rounded dark:bg-red-900/50 dark:border-red-700"></div>
+              <span className="text-zinc-600 dark:text-gray-300">No disponible</span>
             </div>
             <div className="flex items-center gap-2">
               <div className="w-4 h-4 bg-blue-600 border border-blue-400 rounded"></div>
-              <span className="text-gray-300">Seleccionado</span>
+              <span className="text-zinc-600 dark:text-gray-300">Seleccionado</span>
             </div>
           </div>
 
           {/* Mensajes de error y éxito */}
           {error && (
-            <div className="mt-6 p-4 bg-red-900/50 border border-red-700 rounded text-red-300">
+            <div className="mt-6 p-4 bg-red-100 text-red-700 border border-red-300 rounded dark:bg-red-900/50 dark:text-red-300 dark:border-red-700">
               {error}
             </div>
           )}
           {successMessage && (
-            <div className="mt-6 p-4 bg-green-900/50 border border-green-700 rounded text-green-300">
+            <div className="mt-6 p-4 bg-green-100 text-green-700 border border-green-300 rounded dark:bg-green-900/50 dark:text-green-300 dark:border-green-700">
               {successMessage}
             </div>
           )}
@@ -420,7 +420,7 @@ function ResourceDetail() {
         <div className="mt-8 flex gap-4 justify-center">
           <button
             onClick={() => navigate("/")}
-            className="px-6 py-3 bg-gray-600 text-white rounded-lg hover:bg-gray-700 font-semibold disabled:opacity-50"
+            className="px-6 py-3 bg-gray-300 text-zinc-800 hover:bg-gray-400 font-semibold disabled:opacity-50 dark:bg-gray-600 dark:text-white dark:hover:bg-gray-500"
             disabled={isCreatingBooking}
           >
             Cancelar

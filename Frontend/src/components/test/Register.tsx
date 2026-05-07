@@ -18,7 +18,6 @@ function Register({ onSuccess }: RegisterProps) {
     setLoading(true);
     setError("");
 
-    // Validación y limpieza
     const cleanName = name.trim();
     const cleanEmail = email.trim().toLowerCase();
     const cleanPassword = password.trim();
@@ -49,9 +48,7 @@ function Register({ onSuccess }: RegisterProps) {
     }
 
     if (!/^\d{7,15}$/.test(cleanPhone)) {
-      setError(
-        "El teléfono debe contener solo números y tener entre 7 y 15 dígitos.",
-      );
+      setError("El teléfono debe contener solo números y tener entre 7 y 15 dígitos.");
       setLoading(false);
       return;
     }

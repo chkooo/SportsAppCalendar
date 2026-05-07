@@ -15,8 +15,32 @@ const transporter = nodemailer.createTransport({
 });
 
 bookings.get("/", async (c) => {
+  const { status, fromDate, toDate, resourceId } = c.req.query();
+
+  const where: any = {};
+
+  if (status) {
+    where.status = status;
+  }
+
+  if (resourceId) {
+    where.resourceId = resourceId;
+  }
+
+  if (fromDate || toDate) {
+    where.date = {};
+    if (fromDate) {
+      where.date.gte = new Date(`${fromDate}T00:00:00Z`);
+    }
+    if (toDate) {
+      where.date.lte = new Date(`${toDate}T23:59:59Z`);
+    }
+  }
+
   const all = await prisma.booking.findMany({
+    where,
     include: { user: true, resource: true, payment: true },
+    orderBy: { date: "asc" },
   });
   return c.json(all);
 });
@@ -180,12 +204,30 @@ bookings.post("/", async (c) => {
 bookings.put("/:id", async (c) => {
   const id = c.req.param("id");
   const body = await c.req.json();
-  const booking = await prisma.booking.update({ where: { id }, data: body });
+
+  const existing = await prisma.booking.findUnique({ where: { id } });
+  if (!existing) {
+    return c.json({ error: "Booking not found" }, 404);
+  }
+
+  const booking = await prisma.booking.update({
+    where: { id },
+    data: {
+      ...body,
+      updatedAt: new Date(),
+    },
+  });
   return c.json(booking);
 });
 
 bookings.delete("/:id", async (c) => {
   const id = c.req.param("id");
+
+  const existing = await prisma.booking.findUnique({ where: { id } });
+  if (!existing) {
+    return c.json({ error: "Booking not found" }, 404);
+  }
+
   await prisma.booking.delete({ where: { id } });
   return c.json({ message: "Deleted" });
 });

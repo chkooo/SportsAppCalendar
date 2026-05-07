@@ -22,7 +22,16 @@ resources.get("/:id", async (c) => {
 
 resources.post("/", async (c) => {
   const body = await c.req.json();
-  const resource = await prisma.resource.create({ data: body });
+  
+  const client = await prisma.client.findFirst();
+  if (!client) return c.json({ error: "No client found" }, 400);
+  
+  const resource = await prisma.resource.create({
+    data: {
+      ...body,
+      clientId: client.id,
+    },
+  });
   return c.json(resource, 201);
 });
 
