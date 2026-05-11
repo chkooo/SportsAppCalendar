@@ -46,6 +46,9 @@ function Login({ onSuccess }: LoginProps) {
     const { data, error } = await supabase.auth.signInWithPassword({
       email: cleanEmail,
       password: cleanPassword,
+      options: {
+        emailRedirectTo: window.location.origin,
+      },
     });
 
     if (error) {

@@ -1,4 +1,5 @@
 import { Hono } from "hono";
+import { networkInterfaces } from "os";
 import { cors } from "hono/cors";
 import { clients } from "./routes/clients.ts";
 import { users } from "./routes/users.ts";
@@ -31,4 +32,12 @@ Bun.serve({
   fetch: app.fetch,
 });
 
-console.log("Server running on http://localhost:3000");
+const nets = networkInterfaces();
+const ips = Object.values(nets)
+  .flat()
+  .filter((iface) => iface.family === "IPv4" && !iface.internal)
+  .map((iface) => iface.address);
+
+console.log(`Server running on:`);
+console.log(`  - http://localhost:3000`);
+ips.forEach((ip) => console.log(`  - http://${ip}:3000`));

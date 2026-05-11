@@ -73,6 +73,7 @@ function Register({ onSuccess }: RegisterProps) {
           name: cleanName,
           phone: cleanPhone,
         },
+        emailRedirectTo: window.location.origin,
       },
     });
 
